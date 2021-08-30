@@ -1,14 +1,12 @@
 package romannumerals
 
+// Numerals is a group of data or static numbers in roman numerals.
 var Numerals = map[int]string{
-	1:  "I",
-	2:  "II",
-	3:  "III",
-	4:  "IV",
-	5:  "V",
-	6:  "VI",
-	7:  "VII",
-	8:  "VIII",
-	9:  "IX",
-	10: "X",
+	1:    "I",
+	5:    "V",
+	10:   "X",
+	50:   "L",
+	100:  "C",
+	500:  "D",
+	1000: "M",
 }
