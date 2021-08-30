@@ -1,14 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"html"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
-
-	"github.com/study-hary-id/roman-numeral/romannumerals"
 )
 
 func main() {
@@ -16,16 +11,9 @@ func main() {
 		urlPathElements := strings.Split(r.URL.Path, "/")
 
 		if urlPathElements[1] == "roman-numbers" {
-			number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-
-			if number == 0 || number > 10 {
-				// Response failure because it's not in the data.
-				w.WriteHeader(http.StatusNotFound)
-				w.Write([]byte("404 - Not Found"))
-			} else {
-				// Response success with response html text.
-				fmt.Fprintf(w, "%q", html.EscapeString(romannumerals.Numerals[number]))
-			}
+			//number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
+			//fmt.Fprintf(w, "%d", number)
+			w.Write([]byte("Successfully access roman-numbers"))
 
 		} else {
 			// Response failure if using random endpoints.
