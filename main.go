@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -11,9 +13,16 @@ func main() {
 		urlPathElements := strings.Split(r.URL.Path, "/")
 
 		if urlPathElements[1] == "roman-numbers" {
-			//number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-			//fmt.Fprintf(w, "%d", number)
-			w.Write([]byte("Successfully access roman-numbers"))
+			if len(urlPathElements) < 3 {
+				w.Write([]byte(
+					"Successfully access roman-numbers," +
+						"\ngive any number in the url." +
+						"\ne.g. roman-numbers/17",
+				))
+			} else {
+				number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
+				fmt.Fprintf(w, "%d -> roman number", number)
+			}
 
 		} else {
 			// Response failure if using random endpoints.
