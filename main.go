@@ -19,8 +19,8 @@ func main() {
 						"\ne.g. roman-numbers/17",
 				))
 			} else {
-				number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-				w.Write([]byte(convertToRoman(number)))
+				num, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
+				w.Write([]byte(convertToRoman(num)))
 			}
 
 		} else {
