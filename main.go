@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -21,7 +20,7 @@ func main() {
 				))
 			} else {
 				number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-				fmt.Fprintf(w, "%d -> roman number", number)
+				w.Write([]byte(convertToRoman(number)))
 			}
 
 		} else {
