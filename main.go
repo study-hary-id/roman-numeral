@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,11 +14,21 @@ func main() {
 
 		if urlPathElements[1] == "roman-numbers" {
 			if len(urlPathElements) < 3 {
-				w.Write([]byte(
-					"Successfully access roman-numbers," +
-						"\ngive any number in the url." +
-						"\ne.g. roman-numbers/17",
-				))
+				errJson := errors{
+					Status: http.StatusBadRequest,
+					Title:  "Incomplete Endpoint",
+					Detail: "'/roman-numbers' requires numeric parameter.",
+				}
+
+				js, err := json.Marshal(errorPayload{errJson})
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+				}
+
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusBadRequest)
+				w.Write(js)
+
 			} else {
 				num, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
 				w.Write([]byte(convertToRoman(num)))
