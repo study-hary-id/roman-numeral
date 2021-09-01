@@ -31,7 +31,6 @@ func main() {
 
 			} else {
 				num, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-
 				if num == 0 {
 					errJson := errors{
 						Status: http.StatusNotFound,
@@ -47,26 +46,38 @@ func main() {
 					w.Header().Set("Content-Type", "application/json")
 					w.WriteHeader(http.StatusNotFound)
 					w.Write(js)
-				}
 
-				resJson := numeral{
-					Roman:   convertToRoman(num),
-					Ordinal: num,
-				}
+				} else {
+					resJson := numeral{
+						Roman:   convertToRoman(num),
+						Ordinal: num,
+					}
 
-				js, err := json.Marshal(payload{resJson})
-				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				}
+					js, err := json.Marshal(payload{resJson})
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+					}
 
-				w.Header().Set("Content-Type", "application/json")
-				w.Write(js)
+					w.Header().Set("Content-Type", "application/json")
+					w.Write(js)
+				}
 			}
-
 		} else {
 			// Response failure if using random endpoints.
+			errJson := errors{
+				Status: http.StatusBadRequest,
+				Title:  "Bad Request",
+				Detail: "Wrong URL, URL not found.",
+			}
+
+			js, err := json.Marshal(errorPayload{errJson})
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+
+			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("400 - Bad Request"))
+			w.Write(js)
 		}
 	})
 
