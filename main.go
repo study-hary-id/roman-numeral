@@ -49,7 +49,18 @@ func main() {
 					w.Write(js)
 				}
 
-				w.Write([]byte(convertToRoman(num)))
+				resJson := numeral{
+					Roman:   convertToRoman(num),
+					Ordinal: num,
+				}
+
+				js, err := json.Marshal(payload{resJson})
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+				}
+
+				w.Header().Set("Content-Type", "application/json")
+				w.Write(js)
 			}
 
 		} else {
