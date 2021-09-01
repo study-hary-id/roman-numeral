@@ -1,8 +1,7 @@
 package main
 
-import "github.com/study-hary-id/roman-numeral/romannumerals"
-
 // convertToRoman return roman numeral effectively until 3999.
+// TODO: Create unit testing for this function.
 func convertToRoman(num int) (romanNum string) {
 
 	var (
@@ -14,7 +13,7 @@ func convertToRoman(num int) (romanNum string) {
 		num %= keyNumerals[index]
 
 		for maxChance != 0 {
-			romanNum += romannumerals.Numerals[keyNumerals[index]]
+			romanNum += numerals[keyNumerals[index]]
 			maxChance -= 1
 		}
 		index -= 1
