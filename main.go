@@ -31,6 +31,24 @@ func main() {
 
 			} else {
 				num, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
+
+				if num == 0 {
+					errJson := errors{
+						Status: http.StatusNotFound,
+						Title:  "Cannot Convert 0",
+						Detail: "Roman numerals do not have the number 0.",
+					}
+
+					js, err := json.Marshal(errorPayload{errJson})
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+					}
+
+					w.Header().Set("Content-Type", "application/json")
+					w.WriteHeader(http.StatusNotFound)
+					w.Write(js)
+				}
+
 				w.Write([]byte(convertToRoman(num)))
 			}
 
