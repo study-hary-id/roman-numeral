@@ -1,4 +1,6 @@
-package main
+package utils
+
+import "github.com/study-hary-id/roman-numeral/models"
 
 // ConvertToRoman return roman numeral effectively until 3999.
 func ConvertToRoman(num int) (romanNum string) {
@@ -12,7 +14,7 @@ func ConvertToRoman(num int) (romanNum string) {
 		num %= keyNumerals[index]
 
 		for maxChance != 0 {
-			romanNum += Numerals[keyNumerals[index]]
+			romanNum += models.Numerals[keyNumerals[index]]
 			maxChance -= 1
 		}
 		index -= 1
