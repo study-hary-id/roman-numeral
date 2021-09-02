@@ -1,4 +1,4 @@
-package main
+package models
 
 // Numerals is a group of data or static numbers in roman numerals.
 var Numerals = map[int]string{
