@@ -1,11 +1,14 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/study-hary-id/roman-numeral-api/handlers"
 )
 
 func main() {
@@ -14,70 +17,21 @@ func main() {
 
 		if urlPathElements[1] == "roman-numbers" {
 			if len(urlPathElements) < 3 {
-				errJson := errors{
-					Status: http.StatusBadRequest,
-					Title:  "Incomplete Endpoint",
-					Detail: "'/roman-numbers' requires numeric parameter.",
-				}
-
-				js, err := json.Marshal(errorPayload{errJson})
-				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				}
-
-				w.Header().Set("Content-Type", "application/json")
-				w.WriteHeader(http.StatusBadRequest)
-				w.Write(js)
+				handlers.IncompleteRouteHandler(w)
 
 			} else {
-				num, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-				if num == 0 {
-					errJson := errors{
-						Status: http.StatusNotFound,
-						Title:  "Cannot Convert 0",
-						Detail: "Roman numerals do not have the number 0.",
-					}
-
-					js, err := json.Marshal(errorPayload{errJson})
-					if err != nil {
-						http.Error(w, err.Error(), http.StatusInternalServerError)
-					}
-
-					w.Header().Set("Content-Type", "application/json")
-					w.WriteHeader(http.StatusNotFound)
-					w.Write(js)
-
+				num, err := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
+				if err != nil {
+					handlers.WrongRouteHandler(w, r)
+				} else if num == 0 {
+					handlers.ZeroParamHandler(w)
 				} else {
-					resJson := numeral{
-						Roman:   convertToRoman(num),
-						Ordinal: num,
-					}
-
-					js, err := json.Marshal(payload{resJson})
-					if err != nil {
-						http.Error(w, err.Error(), http.StatusInternalServerError)
-					}
-
-					w.Header().Set("Content-Type", "application/json")
-					w.Write(js)
+					handlers.RomanNumberHandler(w, num)
 				}
 			}
 		} else {
 			// Response failure if using random endpoints.
-			errJson := errors{
-				Status: http.StatusBadRequest,
-				Title:  "Bad Request",
-				Detail: "Wrong URL, URL not found.",
-			}
-
-			js, err := json.Marshal(errorPayload{errJson})
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(js)
+			handlers.WrongRouteHandler(w, r)
 		}
 	})
 
@@ -89,5 +43,6 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	s.ListenAndServe()
+	fmt.Println("Server listening at http://localhost:8000")
+	log.Fatal(s.ListenAndServe())
 }

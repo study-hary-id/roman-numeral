@@ -1,6 +1,6 @@
 package utils
 
-import "github.com/study-hary-id/roman-numeral/models"
+import "github.com/study-hary-id/roman-numeral-api/models"
 
 // ConvertToRoman return roman numeral effectively until 3999.
 func ConvertToRoman(num int) (romanNum string) {
