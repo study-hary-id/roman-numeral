@@ -22,13 +22,14 @@ func main() {
 			} else {
 				num, err := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
 				if err != nil {
-					handlers.WrongRouteHandler(w, r)
+					handlers.WrongParamHandler(w)
 				} else if num == 0 {
 					handlers.ZeroParamHandler(w)
 				} else {
 					handlers.RomanNumberHandler(w, num)
 				}
 			}
+
 		} else {
 			// Response failure if using random endpoints.
 			handlers.WrongRouteHandler(w, r)
