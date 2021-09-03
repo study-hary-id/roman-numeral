@@ -1,8 +1,6 @@
 package utils
 
-import (
-	"testing"
-)
+import "testing"
 
 // iterateRomanTesting used to checking for some valid roman numerals.
 func iterateRomanTesting(t *testing.T, numbers []int, romans []string) {
