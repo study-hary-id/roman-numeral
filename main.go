@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"os"
 
 	"github.com/study-hary-id/roman-numeral-api/handlers"
 )
@@ -36,14 +37,16 @@ func main() {
 		}
 	})
 
-	// Create a server and run it on 8000 port.
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+
+	// Create a server and run it on PORT environment variable.
 	s := &http.Server{
-		Addr:           ":8000",
+		Addr:           port,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	fmt.Println("Server listening at http://localhost:8000")
+	fmt.Printf("Server listening at http://localhost%s\n", port)
 	log.Fatal(s.ListenAndServe())
 }
