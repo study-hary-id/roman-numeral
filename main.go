@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
-	"os"
 
 	"github.com/study-hary-id/roman-numeral-api/handlers"
 )
@@ -16,6 +16,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		urlPathElements := strings.Split(r.URL.Path, "/")
 
+		// Handle only roman-numbers endpoint.
 		if urlPathElements[1] == "roman-numbers" {
 			if len(urlPathElements) < 3 {
 				handlers.IncompleteRouteHandler(w)
@@ -37,16 +38,16 @@ func main() {
 		}
 	})
 
-	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	PORT := fmt.Sprintf(":%s", os.Getenv("PORT"))
 
 	// Create a server and run it on PORT environment variable.
 	s := &http.Server{
-		Addr:           port,
+		Addr:           PORT,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	fmt.Printf("Server listening at http://localhost%s\n", port)
+	fmt.Printf("Server listening at http://localhost%s\n", PORT)
 	log.Fatal(s.ListenAndServe())
 }
