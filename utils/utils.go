@@ -28,21 +28,21 @@ func ConvertToRoman(num int) (romanNum string) {
 
 }
 
-// ResponseJSON makes the response with models.Payload as JSON format.
+// ResponseJSON marshal the payload and send back.
 func ResponseJSON(w http.ResponseWriter, status int, payload interface{}) {
-	response, jsonErr := json.Marshal(payload)
-	if jsonErr != nil {
-		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+	response, err := json.Marshal(payload)
+	if err != nil {
+		InternalServerError(w, err)
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_, err := w.Write(response)
+	_, err = w.Write(response)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		InternalServerError(w, err)
 	}
 }
 
-// ResponseError makes the error response with models.ErrorPayload as json format.
+// ResponseError wraps payload using models.ErrorPayload.
 func ResponseError(w http.ResponseWriter, status int, payload models.Errors) {
 	ResponseJSON(w, status, models.ErrorPayload{Errors: payload})
 }
