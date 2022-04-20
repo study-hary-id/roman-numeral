@@ -46,3 +46,13 @@ func ResponseJSON(w http.ResponseWriter, status int, payload interface{}) {
 func ResponseError(w http.ResponseWriter, status int, payload models.Errors) {
 	ResponseJSON(w, status, models.ErrorPayload{Errors: payload})
 }
+
+// ResponseSuccess wraps payload using models.Payload.
+func ResponseSuccess(w http.ResponseWriter, status int, payload models.Numeral) {
+	ResponseJSON(w, status, models.Payload{Data: payload})
+}
+
+// InternalServerError handles server error.
+func InternalServerError(w http.ResponseWriter, err error) {
+	http.Error(w, err.Error(), http.StatusInternalServerError)
+}
