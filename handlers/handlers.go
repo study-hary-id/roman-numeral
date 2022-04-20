@@ -8,14 +8,14 @@ import (
 	"github.com/study-hary-id/roman-numeral-api/utils"
 )
 
-// WrongRouteHandler handle wrong URLs/routes/endpoints.
-func WrongRouteHandler(w http.ResponseWriter, r *http.Request) {
+// NotFound handles wrong URLs/routes/endpoints.
+func NotFound(w http.ResponseWriter, r *http.Request) {
 	errJSON := models.Errors{
-		Status: http.StatusBadRequest,
-		Title:  "Wrong URL",
-		Detail: fmt.Sprintf("%s URL not found.", r.URL.Path),
+		Status: http.StatusNotFound,
+		Title:  "Not Found",
+		Detail: fmt.Sprintf(`%q not found.`, r.URL.Path),
 	}
-	utils.ResponseError(w, http.StatusBadRequest, errJSON)
+	utils.ResponseError(w, http.StatusNotFound, errJSON)
 }
 
 // RomanNumberHandler handle roman-numbers endpoint with correct parameter.

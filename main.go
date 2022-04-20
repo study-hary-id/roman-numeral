@@ -34,7 +34,7 @@ func main() {
 
 		} else {
 			// Response failure if using random endpoints.
-			handlers.WrongRouteHandler(w, r)
+			handlers.NotFound(w, r)
 		}
 	})
 
